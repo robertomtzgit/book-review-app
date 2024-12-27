@@ -1,21 +1,19 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
+const booksRoutes = require('./routes/books');
+const authRoutes = require('./routes/auth');
+const { books } = require('./data/books');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
+
 app.use(bodyParser.json());
-app.use(cors());
 
-app.get('/', (req, res) => {
-    res.send('Welcome to the Book Review App!');
-});
+global.books = books;
 
-const bookRoutes = require('./routes/books');
-app.use('/books', bookRoutes);
-const authRoutes = require('./routes/auth');
+app.use('/books', booksRoutes);
 app.use('/auth', authRoutes);
 
-const PORT = 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
